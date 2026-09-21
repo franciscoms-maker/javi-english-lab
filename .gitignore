@@ -1,0 +1,5 @@
+# No publicar material con derechos de autor (libro y guías del colegio)
+*.pdf
+
+# Archivos del sistema
+.DS_Store

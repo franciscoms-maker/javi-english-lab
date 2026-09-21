@@ -1,0 +1,870 @@
+<title>Javi's English Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap">
+<style>
+  :root{
+    --bg:#FBF6EE; --bg2:#FFFFFF; --card:#FFFFFF; --ink:#2A2540; --ink-soft:#6A6486;
+    --violet:#6B4EFF; --violet-d:#5238e0; --cyan:#12B5C9; --coral:#FF5D8F; --yellow:#FFC542;
+    --green:#22C55E; --red:#EF4444; --line:#EBE4D8; --shadow:rgba(64,45,120,.14);
+    --ring:rgba(107,78,255,.35);
+    --v-soft:#EFEBFF; --c-soft:#DFF6F9; --co-soft:#FFE6EE; --y-soft:#FFF3D6; --g-soft:#DCFCE7;
+  }
+  :root:not([data-theme="light"]) { }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#171429; --bg2:#1F1B36; --card:#241F40; --ink:#F2EFFF; --ink-soft:#B4ADD6;
+      --violet:#9E8BFF; --violet-d:#8b74ff; --cyan:#3AD6E8; --coral:#FF7FA6; --yellow:#FFD066;
+      --green:#4ADE80; --red:#F87171; --line:#332C55; --shadow:rgba(0,0,0,.5); --ring:rgba(158,139,255,.5);
+      --v-soft:#2C2555; --c-soft:#123840; --co-soft:#3B2436; --y-soft:#3A3016; --g-soft:#15361f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#171429; --bg2:#1F1B36; --card:#241F40; --ink:#F2EFFF; --ink-soft:#B4ADD6;
+    --violet:#9E8BFF; --violet-d:#8b74ff; --cyan:#3AD6E8; --coral:#FF7FA6; --yellow:#FFD066;
+    --green:#4ADE80; --red:#F87171; --line:#332C55; --shadow:rgba(0,0,0,.5); --ring:rgba(158,139,255,.5);
+    --v-soft:#2C2555; --c-soft:#123840; --co-soft:#3B2436; --y-soft:#3A3016; --g-soft:#15361f;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:'Nunito',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.disp{font-family:'Baloo 2',system-ui,sans-serif;line-height:1.15;letter-spacing:.2px}
+  .wrap{max-width:840px;margin:0 auto;padding-inline:18px;padding-block:0}
+
+  /* Top bar */
+  .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+    background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line)}
+  .topbar-in{max-width:840px;margin:0 auto;display:flex;align-items:center;gap:12px;
+    padding:10px 18px}
+  .brand{display:flex;align-items:center;gap:9px;font-family:'Baloo 2';font-weight:800;font-size:19px}
+  .brand .logo{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:19px;
+    background:linear-gradient(135deg,var(--violet),var(--cyan));box-shadow:0 4px 12px var(--shadow)}
+  .spacer{flex:1}
+  .stars{display:flex;align-items:center;gap:6px;font-weight:800;color:var(--ink);
+    background:var(--y-soft);border:1px solid var(--line);padding:5px 11px;border-radius:999px;font-size:15px}
+  .iconbtn{border:1px solid var(--line);background:var(--card);color:var(--ink);width:38px;height:38px;
+    border-radius:11px;font-size:17px;cursor:pointer;display:grid;place-items:center}
+  .iconbtn:hover{border-color:var(--violet)}
+
+  .backbtn{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--violet);
+    font-family:'Baloo 2';font-weight:700;font-size:15px;cursor:pointer;padding:14px 0 4px}
+
+  /* Hero */
+  .hero{background:
+      radial-gradient(120% 140% at 12% 0%,var(--v-soft),transparent 60%),
+      radial-gradient(120% 140% at 90% 8%,var(--c-soft),transparent 55%);
+    border:1px solid var(--line);border-radius:26px;padding:24px 22px;margin-top:18px;position:relative;overflow:hidden}
+  .hero h1{margin:0 0 4px;font-size:clamp(28px,7vw,42px);color:var(--ink);text-wrap:balance}
+  .hero .wave{font-size:1em}
+  .hero p{margin:0;color:var(--ink-soft);font-weight:600;max-width:52ch}
+  .hero .chip{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:5px 13px;font-weight:800;font-size:12.5px;color:var(--violet);margin-bottom:12px;letter-spacing:.3px;text-transform:uppercase}
+  .hero-emojis{position:absolute;right:-6px;bottom:-8px;font-size:74px;opacity:.16;line-height:1;transform:rotate(-8deg)}
+
+  /* Progress */
+  .prog{margin:16px 0 4px}
+  .prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .prog-top b{font-family:'Baloo 2';font-size:15px}
+  .prog-top span{color:var(--ink-soft);font-weight:700;font-size:13px}
+  .bar{height:14px;background:var(--line);border-radius:999px;overflow:hidden}
+  .bar > i{display:block;height:100%;width:0;border-radius:999px;
+    background:linear-gradient(90deg,var(--violet),var(--cyan),var(--coral));transition:width .6s cubic-bezier(.2,.8,.2,1)}
+
+  /* Section grid */
+  .sec-title{font-family:'Baloo 2';font-weight:700;font-size:20px;margin:26px 4px 12px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(max-width:540px){.grid{grid-template-columns:1fr}}
+  .tile{position:relative;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--card);
+    border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:9px;
+    box-shadow:0 6px 18px var(--shadow);transition:transform .15s,box-shadow .15s,border-color .15s;color:inherit}
+  .tile:hover{transform:translateY(-3px);box-shadow:0 12px 26px var(--shadow);border-color:transparent}
+  .tile:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
+  .tile .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:27px}
+  .tile h3{margin:2px 0 0;font-size:19px}
+  .tile p{margin:0;color:var(--ink-soft);font-weight:600;font-size:13.5px;flex:1}
+  .tile .meta{display:flex;align-items:center;gap:8px;font-weight:800;font-size:12.5px;color:var(--ink-soft)}
+  .tile .go{position:absolute;top:16px;right:16px;font-family:'Baloo 2';font-weight:800;color:var(--violet);font-size:14px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--line)}
+  .dot.on{background:var(--green)}
+  .tile .tag{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--ink-soft)}
+  .badge-done{background:var(--g-soft);color:var(--green);border-radius:999px;padding:2px 9px;font-weight:800;font-size:11.5px}
+
+  .t-voc .ic{background:var(--v-soft)} .t-zero .ic{background:var(--c-soft)}
+  .t-pass .ic{background:var(--co-soft)} .t-read .ic{background:var(--y-soft)}
+  .t-list .ic{background:var(--g-soft)} .t-test .ic{background:var(--v-soft)}
+
+  /* Lesson / card content */
+  .view{padding-bottom:60px}
+  .lesson{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;margin-top:6px;
+    box-shadow:0 6px 18px var(--shadow)}
+  .lesson h2{margin:0 0 10px;font-size:23px;display:flex;align-items:center;gap:10px}
+  .lesson h2 .e{font-size:26px}
+  .rule{background:var(--v-soft);border:1px solid var(--line);border-left:5px solid var(--violet);
+    border-radius:14px;padding:13px 15px;margin:12px 0;font-weight:600}
+  .rule.c{background:var(--c-soft);border-left-color:var(--cyan)}
+  .rule.co{background:var(--co-soft);border-left-color:var(--coral)}
+  .rule b{color:var(--ink)}
+  .formula{font-family:'Baloo 2';font-weight:700;background:var(--bg);border:1px dashed var(--line);
+    border-radius:12px;padding:10px 12px;text-align:center;margin:8px 0;font-size:15.5px}
+  .hl{color:var(--violet);font-weight:800} .hl2{color:var(--coral);font-weight:800} .hl3{color:var(--cyan);font-weight:800}
+  .ex{margin:8px 0;padding-left:2px}
+  .ex li{margin:5px 0}
+  .note{font-size:13.5px;color:var(--ink-soft);font-weight:600}
+
+  /* Quiz */
+  .q{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-top:14px;
+    box-shadow:0 6px 18px var(--shadow)}
+  .q .qh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
+  .q .qn{font-family:'Baloo 2';font-weight:800;color:var(--violet);font-size:14px}
+  .q .qtype{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--ink-soft);
+    background:var(--bg);border:1px solid var(--line);padding:3px 9px;border-radius:999px}
+  .q .qtext{font-size:17px;font-weight:700;margin:6px 0 14px;line-height:1.4}
+  .q .qtext .blank{display:inline-block;min-width:64px;border-bottom:3px dotted var(--violet);text-align:center;color:var(--violet)}
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{display:flex;align-items:center;gap:11px;text-align:left;border:2px solid var(--line);background:var(--bg2);
+    color:var(--ink);border-radius:14px;padding:12px 14px;font-size:15.5px;font-weight:700;cursor:pointer;
+    transition:border-color .12s,background .12s,transform .08s;width:100%}
+  .opt:hover:not(:disabled){border-color:var(--violet)}
+  .opt:active:not(:disabled){transform:scale(.99)}
+  .opt .key{width:26px;height:26px;flex:none;border-radius:8px;background:var(--v-soft);color:var(--violet);
+    display:grid;place-items:center;font-family:'Baloo 2';font-weight:800;font-size:14px}
+  .opt.correct{border-color:var(--green);background:var(--g-soft)}
+  .opt.correct .key{background:var(--green);color:#fff}
+  .opt.wrong{border-color:var(--red);background:var(--co-soft)}
+  .opt.wrong .key{background:var(--red);color:#fff}
+  .opt:disabled{cursor:default}
+
+  .typed{display:flex;gap:9px;flex-wrap:wrap}
+  .typed input{flex:1;min-width:160px;border:2px solid var(--line);background:var(--bg2);color:var(--ink);
+    border-radius:13px;padding:12px 14px;font-size:16px;font-weight:700;font-family:inherit}
+  .typed input:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 4px var(--ring)}
+  .typed input.correct{border-color:var(--green);background:var(--g-soft)}
+  .typed input.wrong{border-color:var(--red);background:var(--co-soft)}
+  .btn{border:none;border-radius:13px;padding:12px 18px;font-family:'Baloo 2';font-weight:800;font-size:15px;
+    cursor:pointer;background:var(--violet);color:#fff;box-shadow:0 4px 12px var(--shadow);transition:transform .08s,filter .12s}
+  .btn:hover{filter:brightness(1.06)} .btn:active{transform:scale(.98)}
+  .btn.ghost{background:var(--card);color:var(--violet);border:2px solid var(--line);box-shadow:none}
+  .btn.small{padding:9px 14px;font-size:14px}
+  .btn:disabled{opacity:.5;cursor:default}
+
+  .fb{margin-top:12px;border-radius:13px;padding:11px 14px;font-weight:700;font-size:14.5px;display:none;align-items:flex-start;gap:9px}
+  .fb.show{display:flex}
+  .fb.ok{background:var(--g-soft);color:var(--green)}
+  .fb.no{background:var(--co-soft);color:var(--red)}
+  .fb .em{font-size:19px;line-height:1.2}
+  .fb small{display:block;color:var(--ink-soft);font-weight:700;margin-top:3px}
+
+  /* Flashcards */
+  .fc-stage{perspective:1200px;margin-top:6px}
+  .fc{width:100%;min-height:210px;position:relative;transform-style:preserve-3d;transition:transform .5s;cursor:pointer}
+  .fc.flip{transform:rotateY(180deg)}
+  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;border:1px solid var(--line);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:22px;text-align:center;
+    box-shadow:0 8px 22px var(--shadow)}
+  .fc-front{background:linear-gradient(150deg,var(--v-soft),var(--c-soft))}
+  .fc-back{background:var(--card);transform:rotateY(180deg)}
+  .fc .emoji{font-size:62px;line-height:1}
+  .fc .word{font-family:'Baloo 2';font-weight:800;font-size:30px;color:var(--ink)}
+  .fc .pos{font-size:13px;font-weight:800;color:var(--violet);text-transform:uppercase;letter-spacing:.5px}
+  .fc .es{font-family:'Baloo 2';font-weight:800;font-size:24px;color:var(--coral)}
+  .fc .def{color:var(--ink-soft);font-weight:600;max-width:34ch}
+  .fc .tapnote{font-size:12px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.5px}
+  .fc-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+  .fc-count{font-family:'Baloo 2';font-weight:800;color:var(--ink-soft)}
+
+  /* Reading */
+  .story{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:6px;box-shadow:0 6px 18px var(--shadow)}
+  .story h2{margin:0 0 3px;font-size:22px}
+  .story .by{color:var(--ink-soft);font-weight:700;font-size:13px;margin-bottom:10px}
+  .story p{margin:9px 0;font-size:15.5px}
+  .story .glo{margin-top:12px;font-size:13px;color:var(--ink-soft);font-weight:600;background:var(--bg);
+    border:1px dashed var(--line);border-radius:12px;padding:10px 12px}
+  mark{background:var(--y-soft);color:var(--ink);border-radius:5px;padding:0 3px;font-weight:800}
+
+  /* Listening */
+  .player{display:flex;align-items:center;gap:14px;background:linear-gradient(150deg,var(--v-soft),var(--c-soft));
+    border:1px solid var(--line);border-radius:20px;padding:16px;margin-top:6px}
+  .playbtn{width:64px;height:64px;flex:none;border-radius:50%;border:none;cursor:pointer;color:#fff;font-size:26px;
+    background:linear-gradient(135deg,var(--violet),var(--cyan));box-shadow:0 6px 16px var(--shadow);display:grid;place-items:center}
+  .playbtn:active{transform:scale(.96)}
+  .player .pt{font-weight:800;font-family:'Baloo 2'} .player .ps{font-size:13px;color:var(--ink-soft);font-weight:700}
+  .speedrow{display:flex;gap:8px;align-items:center;margin-top:10px;font-weight:700;font-size:13px;color:var(--ink-soft);flex-wrap:wrap}
+  .pill{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 12px;font-weight:800;cursor:pointer;font-size:13px}
+  .pill.on{border-color:var(--violet);color:var(--violet);background:var(--v-soft)}
+  .warn{background:var(--y-soft);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:700;font-size:13.5px;margin-top:10px}
+
+  /* Result */
+  .result{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:26px 20px;
+    margin-top:10px;box-shadow:0 10px 26px var(--shadow)}
+  .result .big{font-size:70px;line-height:1;margin-bottom:6px}
+  .result h2{font-size:26px;margin:0 0 6px}
+  .result .score{font-family:'Baloo 2';font-weight:800;font-size:20px;color:var(--violet);margin:4px 0 2px}
+  .result p{color:var(--ink-soft);font-weight:700;margin:6px 0 16px}
+  .result .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .starburst{display:inline-flex;gap:5px;font-size:30px;margin:6px 0}
+
+  .foot{text-align:center;color:var(--ink-soft);font-weight:700;font-size:12.5px;padding:24px 0 8px}
+  .confetti{position:fixed;top:-10px;width:11px;height:16px;z-index:60;pointer-events:none;border-radius:2px}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand"><span class="logo">💻</span><span>Javi's English Lab</span></div>
+    <div class="spacer"></div>
+    <div class="stars" title="Estrellas ganadas">⭐ <span id="starCount">0</span></div>
+    <button class="iconbtn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+  </div>
+</div>
+
+<main class="wrap view" id="app"></main>
+<div class="foot wrap">Unit 6 · Let's Connect · Hecho con 💜 para Javiera · 6th Grade</div>
+
+<script>
+/* ---------------- Persistence ---------------- */
+const STORE='javi_english_v1';
+let state={stars:0,done:{},best:{}};
+try{const s=localStorage.getItem(STORE);if(s)state=Object.assign(state,JSON.parse(s));}catch(e){}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
+function setStars(){document.getElementById('starCount').textContent=state.stars;}
+
+/* Theme */
+(function(){
+  const btn=document.getElementById('themeBtn');
+  function cur(){return document.documentElement.getAttribute('data-theme');}
+  function paint(){btn.textContent = (cur()==='dark') ? '☀️' : (cur()==='light'?'🌙': (matchMedia('(prefers-color-scheme:dark)').matches?'☀️':'🌙'));}
+  btn.onclick=()=>{const isDark = cur()==='dark' || (!cur() && matchMedia('(prefers-color-scheme:dark)').matches);
+    document.documentElement.setAttribute('data-theme', isDark?'light':'dark');paint();};
+  paint();
+})();
+
+/* ---------------- Data ---------------- */
+const VOCAB=[
+  {w:'download',e:'⬇️',pos:'verb',es:'descargar',def:'To copy a file or app from the internet to your device.'},
+  {w:'upload',e:'⬆️',pos:'verb',es:'subir',def:'To send a file from your device to the internet.'},
+  {w:'install',e:'🧩',pos:'verb',es:'instalar',def:'To add a new program or app to a device.'},
+  {w:'website',e:'🌐',pos:'noun',es:'sitio web',def:'A page or group of pages on the internet.'},
+  {w:'password',e:'🔒',pos:'noun',es:'contraseña',def:'A secret word or code you use to log in.'},
+  {w:'app',e:'📱',pos:'noun',es:'aplicación',def:'A program you use on a phone or tablet.'},
+  {w:'online',e:'📶',pos:'adj/adv',es:'en línea / conectado',def:'Connected to the internet.'},
+  {w:'social media',e:'💬',pos:'noun',es:'redes sociales',def:'Apps where people share posts and photos.'},
+  {w:'selfie',e:'🤳',pos:'noun',es:'autofoto',def:'A photo you take of yourself.'},
+  {w:'headphones',e:'🎧',pos:'noun',es:'audífonos',def:'You wear them to listen to sound privately.'},
+  {w:'emoji',e:'😄',pos:'noun',es:'emoji',def:'A small picture used in messages to show feelings.'},
+  {w:'screen',e:'🖥️',pos:'noun',es:'pantalla',def:'The flat part of a device that shows images.'},
+  {w:'smartwatch',e:'⌚',pos:'noun',es:'reloj inteligente',def:'A watch that connects to the internet and apps.'},
+  {w:'track',e:'📍',pos:'verb',es:'rastrear / seguir',def:'To follow where something or someone is.'},
+  {w:'swipe',e:'👉',pos:'verb',es:'deslizar',def:'To move your finger across a touch screen.'},
+  {w:'save',e:'💾',pos:'verb',es:'guardar',def:'To keep a file so you can use it later.'},
+  {w:'delete',e:'🗑️',pos:'verb',es:'borrar / eliminar',def:'To remove a file or text.'},
+  {w:'restart',e:'🔄',pos:'verb',es:'reiniciar',def:'To turn a device off and on again.'},
+  {w:'click',e:'🖱️',pos:'verb',es:'hacer clic',def:'To press a mouse button or a link.'},
+  {w:'virus',e:'🦠',pos:'noun',es:'virus',def:'A bad program that can damage your computer.'},
+  {w:'battery',e:'🔋',pos:'noun',es:'batería',def:'It stores the power a device needs to work.'},
+  {w:'laptop',e:'💻',pos:'noun',es:'computador portátil',def:'A small computer you can carry.'}
+];
+
+/* MULTIPLE CHOICE + FILL + UNSCRAMBLE questions.
+   type: 'mc' (options,answer index) | 'fill' (accept array) | 'gap' (sentence has __, options) */
+
+const Q_VOCAB=[
+  {type:'mc',q:'You want to keep your work so you can open it tomorrow. What do you do?',opts:['delete it','save it','swipe it','track it'],a:1,fb:'"Save" = guardar tu trabajo.'},
+  {type:'mc',q:'A ____ is a bad program that can damage your computer.',opts:['battery','virus','screen','emoji'],a:1,fb:'A virus can infect / harm the computer.'},
+  {type:'mc',q:'You take a photo of yourself. It is a ____.',opts:['selfie','password','website','headphones'],a:0,fb:'Selfie = autofoto. 🤳'},
+  {type:'mc',q:'To read your messages secretly, no one can hear you if you wear ____.',opts:['a smartwatch','headphones','a battery','a screen'],a:1,fb:'Headphones = audífonos. 🎧'},
+  {type:'mc',q:'Which word means "to move your finger across a touch screen"?',opts:['click','install','swipe','upload'],a:2,fb:'Swipe = deslizar. 👉'},
+  {type:'fill',q:'Complete: To put a new app on your phone, you ____ it.',accept:['install'],fb:'install = instalar.'},
+  {type:'fill',q:'Complete: A secret code to log in to an account is a ____.',accept:['password'],fb:'password = contraseña.'},
+  {type:'mc',q:'Instagram and TikTok are examples of ____.',opts:['social media','a battery','a virus','a password'],a:0,fb:'They are social media apps.'},
+  {type:'fill',q:'Opposite of "download": to ____ a photo to the internet.',accept:['upload'],fb:'upload ⬆️ vs download ⬇️.'},
+  {type:'mc',q:'Your phone is dying. You need to charge the ____.',opts:['screen','emoji','battery','website'],a:2,fb:'battery = batería. 🔋'}
+];
+
+const Q_ZERO=[
+  {type:'gap',q:'If you ____ "save", the computer ____ your document.',opts:[['press','saves'],['press','save'],['presses','saves']],a:0,fb:'Zero conditional: If + present simple, + present simple. He/it → adds -s in the result: it SAVES.'},
+  {type:'gap',q:'If the battery ____ low, the laptop ____ down automatically.',opts:[['get','shut'],['gets','shuts'],['gets','shut']],a:1,fb:'"battery" and "laptop" are IT → gets / shuts.'},
+  {type:'gap',q:'If you ____ a new program, it usually ____ some space.',opts:[['install','takes'],['installs','take'],['install','take']],a:0,fb:'"You" → install (no -s). "It" → takes.'},
+  {type:'gap',q:'Plants ____ better if they ____ enough sunlight.',opts:[['grows','get'],['grow','get'],['grow','gets']],a:1,fb:'"Plants" and "they" are plural → grow / get (no -s).'},
+  {type:'gap',q:'If water ____ 0°C, it ____.',opts:[['reach','freezes'],['reaches','freeze'],['reaches','freezes']],a:2,fb:'Facts of nature use the zero conditional. Water/it → reaches / freezes.'},
+  {type:'mc',q:'When do we use the ZERO conditional?',opts:['For facts and things that are always true','For a dream in the future','For something that happened yesterday'],a:0,fb:'Zero conditional = general truths, facts, and instructions.'},
+  {type:'fill',q:'Fix the mistake: "If you deletes a file, it disappears."  → If you ____ a file, it disappears.',accept:['delete'],fb:'"You" never takes -s → delete.'},
+  {type:'fill',q:'Fill in (negative): If she ____ (not know) the answer, she asks the teacher.',accept:["doesn't know","does not know","doesnt know"],fb:'Negative in zero conditional: doesn\'t + verb.'},
+  {type:'order',q:'Order the words into a zero conditional sentence:',tokens:['if','the','battery','is','low','the','phone','dies'],answer:'if the battery is low the phone dies',fb:'If + condition, + result. ✔'},
+  {type:'gap',q:'If a green light ____, cars ____.',opts:[['turns','go'],['turn','goes'],['turns','goes']],a:0,fb:'"a green light" → turns (it). "cars" → go (they).'}
+];
+
+const Q_PASS=[
+  {type:'gap',q:'The smart fridge ____ ____ by scientists.',opts:[['was','made'],['were','made'],['is','make']],a:0,fb:'Past passive = WAS/WERE + past participle. Singular subject → was made.'},
+  {type:'gap',q:'The Internet ____ ____ in 1983.',opts:[['were','invent'],['was','invented'],['is','invented']],a:1,fb:'was + invented (past participle of "invent").'},
+  {type:'gap',q:'The big computers ____ ____ for only one hour a week.',opts:[['was','used'],['were','used'],['were','use']],a:1,fb:'Plural subject "computers" → were used.'},
+  {type:'mc',q:'Which is the correct PAST PASSIVE structure?',opts:['subject + was/were + past participle','subject + is/are + verb-ing','subject + will + verb'],a:0,fb:'Past passive: was/were + verb in past participle (made, invented, used, sent...).'},
+  {type:'fill',q:'Active → Passive. "Scientists made the fridge." → The fridge ____ ____ by scientists.',accept:['was made','was  made'],fb:'The object (the fridge) comes first: was made.'},
+  {type:'gap',q:'The app ____ ____ for families.',opts:[['was','made'],['were','made'],['was','make']],a:0,fb:'"The app" is singular → was made.'},
+  {type:'fill',q:'Complete with the verb "send": The photos ____ ____ yesterday. (past passive, plural)',accept:['were sent'],fb:'Plural → were + sent (past participle).'},
+  {type:'mc',q:'Choose the passive sentence:',opts:['My mom bought a tablet.','A tablet was bought by my mom.','My mom is buying a tablet.'],a:1,fb:'Passive: the object (a tablet) is the subject + was bought.'},
+  {type:'gap',q:'The Internet ____ ____ in our school until 2005.',opts:[["wasn't",'used'],["weren't",'used'],['isn\'t','used']],a:0,fb:'Negative past passive singular → wasn\'t used.'},
+  {type:'fill',q:'Active → Passive. "They installed the app." → The app ____ ____.',accept:['was installed'],fb:'The app (singular) + was installed.'}
+];
+
+const STORIES={
+  fridge:{
+    title:'The Intelligent Fridge',by:'Unit 6 · Reading',
+    html:`<p><b>Emir</b> turned on his tablet and showed his mom a photo. "Look, Mom! It's a smart fridge!" he said. "It <mark>was made</mark> by scientists. Can we get one?" Mom looked confused. "What's a smart fridge?" she asked.</p>
+      <p>"It's a very intelligent fridge with a computer on the door," said Emir. "If you tap on this icon, the fridge shows you a baking website." "But I already have this recipe book," she said, "and we like baking these cakes!"</p>
+      <p>"Well... if we don't have enough food, the fridge buys food online for us!" Mom looked confused again. "But if we don't have enough food, we go to the supermarket. And if we go to the supermarket, we usually meet friends at the café. We like meeting our friends."</p>
+      <p>Emir tried one more time: "Yes, but a smart fridge can play music!" "But we can use the radio," said Mom. "If we turn on the radio, we listen and dance to music together!" Mom and Emir laughed. "We don't need a smart fridge, do we?" said Emir. "What would you like for lunch? Let's look in the fridge!"</p>`,
+    glo:'confused = confundido/a · smart = inteligente · tap on = tocar (pantalla) · recipe = receta',
+    qs:[
+      {type:'mc',q:'Who wants the smart fridge?',opts:['Mom','Emir','The scientists'],a:1,fb:'Emir is the one who wants it.'},
+      {type:'mc',q:'According to Emir, the smart fridge was made by ____.',opts:['his mom','scientists','a café'],a:1,fb:'"It was made by scientists." (past passive!)'},
+      {type:'mc',q:'Why does Mom NOT want the smart fridge?',opts:['It is too expensive','She likes doing things the normal way with people','It is broken'],a:1,fb:'She likes the recipe book, meeting friends and the radio.'},
+      {type:'mc',q:'"If you tap on this icon, the fridge shows you a website." This sentence is a ____.',opts:['zero conditional','past passive','question'],a:0,fb:'If + present, + present = zero conditional. 👏'},
+      {type:'fill',q:'Complete from the text: "If we turn on the radio, we listen and ____ to music."',accept:['dance'],fb:'"...we listen and dance to music together."'}
+    ]
+  },
+  rainforest:{
+    title:'An App Adventure in the Rainforest',by:'by Keisha · Cameroon',
+    html:`<p>I live in <b>Cameroon</b>, in Africa, and my hobby is nature. I like Cameroon because there are big rainforests with amazing plants and animals. About 320 types of mammals and 900 types of birds live there.</p>
+      <p>For my birthday, my mom and dad bought me a nature adventure app. It <mark>was made</mark> for families, so we downloaded the app onto my dad's tablet.</p>
+      <p>We play the game in the rainforest. You have to find things, like a blue bird or different plants. If you find these things, you collect points. If you collect a lot of points, you see an animal badge. You have to quickly <mark>swipe</mark> down to save it in your app!</p>
+      <p>The app has thousands of players. Everybody at my school plays. At lunchtime, we show our badges and we talk about the game. We've learned a lot about nature!</p>`,
+    glo:'hobby = pasatiempo · badge = insignia · collect points = juntar puntos · swipe down = deslizar hacia abajo',
+    qs:[
+      {type:'mc',q:'Where does Keisha live?',opts:['In a rainforest app','In Cameroon, Africa','At her school'],a:1,fb:'She lives in Cameroon.'},
+      {type:'mc',q:'Who gave her the app?',opts:['Her school','Her mom and dad','Her friends'],a:1,fb:'"my mom and dad bought me a nature adventure app."'},
+      {type:'mc',q:'The app "was made for families". This is an example of ____.',opts:['zero conditional','past passive voice','vocabulary only'],a:1,fb:'was made = past passive. ⭐'},
+      {type:'fill',q:'Complete: "If you collect a lot of points, you see an animal ____."',accept:['badge'],fb:'You see an animal badge.'},
+      {type:'mc',q:'What do you do to save the badge?',opts:['You swipe down quickly','You delete it','You turn off the tablet'],a:0,fb:'"quickly swipe down to save it."'}
+    ]
+  },
+  tech:{
+    title:'How Has Technology Changed?',by:'by Mrs. Jones · Computer science teacher',
+    html:`<p>My name is <b>Mrs. Jones</b>, and I'm a computer science teacher. When I started my job in 1995, there were two big computers, but they <mark>were used</mark> for only one hour a week by the students, and you couldn't go online.</p>
+      <p>The Internet <mark>was invented</mark> in 1983, but it <mark>wasn't used</mark> in our school until 2005. I had a phone at home, but you couldn't put it in your bag and use it outside your house.</p>
+      <p>You couldn't take a <b>selfie</b> or download any useful <b>app</b>. And you couldn't use an <b>emoji</b> to send texts with funny pictures, either!</p>`,
+    glo:'were used = eran usados · was invented = fue inventado · wasn\'t used = no era usado · couldn\'t = no podías',
+    qs:[
+      {type:'mc',q:'In 1995, how often could students use the computers?',opts:['All day','One hour a week','Never'],a:1,fb:'"used for only one hour a week."'},
+      {type:'mc',q:'When was the Internet invented?',opts:['In 1983','In 1995','In 2005'],a:0,fb:'"The Internet was invented in 1983."'},
+      {type:'mc',q:'"The Internet was invented in 1983." What tense is this?',opts:['Zero conditional','Past passive voice','Present simple'],a:1,fb:'was + invented = past passive. 🎯'},
+      {type:'fill',q:'Complete: "they ____ ____ for only one hour a week" (past passive, plural).',accept:['were used'],fb:'Plural "they" → were used.'},
+      {type:'mc',q:'Which of these could you NOT do in 1995?',opts:['Read a book','Take a selfie or use an emoji','Use a radio'],a:1,fb:'No selfies, apps or emojis back then!'}
+    ]
+  }
+};
+
+const Q_LISTEN=[
+  {text:"If you press the power button, the computer turns on.",
+   q:'What is TRUE about the sentence you heard?',
+   opts:['It is a zero conditional about a computer','It is a past passive sentence','It talks about the future'],a:0,
+   fb:'"If you press..., the computer turns on." = zero conditional.'},
+  {text:"The app was made for families.",
+   q:'Which words did you hear?',
+   opts:['is making','was made','were make'],a:1,
+   fb:'was made = past passive. 🎧'},
+  {text:"If the battery is low, the laptop shuts down.",
+   q:'What happens if the battery is low?',
+   opts:['The laptop shuts down','The laptop turns on','You take a selfie'],a:0,
+   fb:'"...the laptop shuts down."'},
+  {text:"The Internet was invented in 1983.",
+   q:'When was the Internet invented?',
+   opts:['1993','1983','1938'],a:1,
+   fb:'It was invented in 1983.'},
+  {text:"If you download a virus, your computer gets infected.",
+   q:'Complete: If you download a virus, your computer gets ____.',
+   opts:['connected','infected','deleted'],a:1,
+   fb:'gets infected = se infecta. 🦠'},
+  {text:"The photos were uploaded to the website yesterday.",
+   q:'What were uploaded to the website?',
+   opts:['The photos','The batteries','The headphones'],a:0,
+   fb:'"The photos were uploaded..." (past passive, plural).'}
+];
+
+const SECTIONS=[
+  {id:'vocab',cls:'t-voc',ic:'💾',title:'Vocabulary',tag:'Computers & Technology',desc:'Flashcards + game with 22 tech words.'},
+  {id:'zero',cls:'t-zero',ic:'🔀',title:'Zero Conditional',tag:'Grammar',desc:'If + present, present. Facts & tech rules.'},
+  {id:'pass',cls:'t-pass',ic:'🔁',title:'Past Passive Voice',tag:'Grammar',desc:'was / were + past participle.'},
+  {id:'read',cls:'t-read',ic:'📖',title:'Reading',tag:'3 stories',desc:'Fridge, Rainforest & Technology + questions.'},
+  {id:'listen',cls:'t-list',ic:'🎧',title:'Listening',tag:'Listen & choose',desc:'The app reads sentences out loud to you.'},
+  {id:'test',cls:'t-test',ic:'🏆',title:'Final Challenge',tag:'Mixed test',desc:'12 mixed questions. Get your medal!'}
+];
+
+/* ---------------- Helpers ---------------- */
+const app=document.getElementById('app');
+function el(h){const d=document.createElement('div');d.innerHTML=h.trim();return d.firstElementChild;}
+function norm(s){return (s||'').toLowerCase().replace(/[.,;!?"']/g,'').replace(/\s+/g,' ').trim();}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
+
+function confetti(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const cols=['#6B4EFF','#12B5C9','#FF5D8F','#FFC542','#22C55E'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=Math.random()*100+'vw';c.style.background=cols[i%cols.length];
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    const dur=2200+Math.random()*1500;
+    c.animate([{transform:`translateY(0) rotate(0)`,opacity:1},{transform:`translateY(${window.innerHeight+40}px) rotate(${720*(Math.random()>.5?1:-1)}deg)`,opacity:.9}],{duration:dur,easing:'cubic-bezier(.3,.6,.4,1)'});
+    document.body.appendChild(c);setTimeout(()=>c.remove(),dur);
+  }
+}
+function awardStars(n){state.stars+=n;save();setStars();}
+
+/* ---------------- Home ---------------- */
+function renderHome(){
+  const total=SECTIONS.length;
+  const doneCount=SECTIONS.filter(s=>state.done[s.id]).length;
+  const pct=Math.round(doneCount/total*100);
+  app.innerHTML='';
+  app.appendChild(el(`
+    <section class="hero">
+      <span class="chip">Unit 6 · Let's Connect</span>
+      <h1>¡Hola, Javiera! <span class="wave">👋</span></h1>
+      <p>Prepara tu prueba de inglés jugando. Toca cada tema, gana estrellas ⭐ y termina con el Final Challenge. ¡Tú puedes! 💪</p>
+      <div class="hero-emojis">💻📱🎧</div>
+    </section>
+  `));
+  app.appendChild(el(`
+    <div class="prog">
+      <div class="prog-top"><b>Tu progreso</b><span>${doneCount}/${total} temas · ${pct}%</span></div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+    </div>
+  `));
+  app.appendChild(el(`<div class="sec-title">Elige un tema 👇</div>`));
+  const grid=el('<div class="grid"></div>');
+  SECTIONS.forEach((s,i)=>{
+    const done=state.done[s.id];
+    const best=state.best[s.id];
+    const t=el(`
+      <button class="tile ${s.cls}" data-id="${s.id}">
+        <span class="go">Abrir →</span>
+        <span class="ic">${s.ic}</span>
+        <span class="tag">${s.tag}</span>
+        <h3>${s.title}</h3>
+        <p>${s.desc}</p>
+        <span class="meta">
+          <span class="dot ${done?'on':''}"></span>
+          ${done?`<span class="badge-done">✓ ${best!=null?best+'/'+best+' ⭐':'Hecho'}</span>`:'<span>Sin empezar</span>'}
+        </span>
+      </button>`);
+    t.onclick=()=>open(s.id);
+    grid.appendChild(t);
+  });
+  app.appendChild(grid);
+  if(doneCount===total){
+    app.appendChild(el(`<div class="result" style="margin-top:22px"><div class="big">🌟</div><h2>¡Completaste todo!</h2><p>Estás lista para la prueba. Repasa lo que quieras cuando quieras.</p></div>`));
+  }
+  scrollTop();
+}
+
+function backBtn(){
+  const b=el('<button class="backbtn">← Volver al inicio</button>');
+  b.onclick=renderHome;return b;
+}
+
+function open(id){
+  if(id==='vocab')renderVocab();
+  else if(id==='zero')renderLesson('zero');
+  else if(id==='pass')renderLesson('pass');
+  else if(id==='read')renderReadingHub();
+  else if(id==='listen')renderListening();
+  else if(id==='test')renderTest();
+}
+
+/* ---------------- Generic quiz engine ---------------- */
+/* questions: array of {type, ...}. onDone(score,total,secId) */
+function runQuiz(container,questions,secId,titleHtml){
+  let i=0,score=0;
+  const box=el('<div></div>');
+  container.appendChild(box);
+  function progress(){return `<div class="qh"><span class="qn">Pregunta ${i+1} de ${questions.length}</span><span class="qtype">⭐ ${score}</span></div>`;}
+
+  function showResult(){
+    const pct=Math.round(score/questions.length*100);
+    let emoji,msg;
+    if(pct===100){emoji='🏆';msg='¡PERFECTO! Eres una crack del inglés.';}
+    else if(pct>=80){emoji='🌟';msg='¡Excelente! Casi perfecto.';}
+    else if(pct>=60){emoji='😄';msg='¡Bien! Repasa lo que fallaste y vuelve a intentar.';}
+    else {emoji='💪';msg='¡Sigue practicando! Inténtalo de nuevo, tú puedes.';}
+    const first=!state.done[secId] || (state.best[secId]||0)<score;
+    if(first){state.done[secId]=true;state.best[secId]=score;
+      const gained = pct===100?3:pct>=60?2:1; awardStars(gained);}
+    else {save();}
+    if(pct>=80)confetti();
+    box.innerHTML='';
+    const r=el(`
+      <div class="result">
+        <div class="big">${emoji}</div>
+        <h2>${msg}</h2>
+        <div class="starburst">${'⭐'.repeat(pct===100?3:pct>=60?2:1)}</div>
+        <div class="score">Puntaje: ${score} / ${questions.length} (${pct}%)</div>
+        <p>${first?'¡Ganaste estrellas nuevas! ⭐':'Ya lo habías hecho — igual buen repaso.'}</p>
+        <div class="row">
+          <button class="btn" id="retry">🔁 Reintentar</button>
+          <button class="btn ghost" id="home">🏠 Inicio</button>
+        </div>
+      </div>`);
+    r.querySelector('#retry').onclick=()=>{i=0;score=0;render();scrollTop();};
+    r.querySelector('#home').onclick=renderHome;
+    box.appendChild(r);
+    scrollTop();
+  }
+
+  function next(correct){
+    if(correct)score++;
+    i++;
+    if(i>=questions.length)showResult(); else render();
+  }
+
+  function render(){
+    const item=questions[i];
+    box.innerHTML='';
+    const card=el(`<div class="q">${progress()}</div>`);
+
+    if(item.type==='mc'){
+      card.appendChild(el(`<div class="qtext">${item.q}</div>`));
+      const opts=el('<div class="opts"></div>');
+      const order=item._order||(item._order=shuffle(item.opts.map((o,ix)=>ix)));
+      order.forEach((realIx,pos)=>{
+        const o=el(`<button class="opt"><span class="key">${String.fromCharCode(65+pos)}</span><span>${item.opts[realIx]}</span></button>`);
+        o.onclick=()=>choose(o,realIx===item.a,opts,item);
+        opts.appendChild(o);
+      });
+      card.appendChild(opts);
+    }
+    else if(item.type==='gap'){
+      card.appendChild(el(`<div class="qtext">${item.q.replace(/____/g,'<span class="blank">?</span>')}</div>`));
+      const opts=el('<div class="opts"></div>');
+      const order=item._order||(item._order=shuffle(item.opts.map((o,ix)=>ix)));
+      order.forEach((realIx,pos)=>{
+        const label=item.opts[realIx].join('  /  ');
+        const o=el(`<button class="opt"><span class="key">${String.fromCharCode(65+pos)}</span><span>${label}</span></button>`);
+        o.onclick=()=>choose(o,realIx===item.a,opts,item);
+        opts.appendChild(o);
+      });
+      card.appendChild(opts);
+    }
+    else if(item.type==='fill'){
+      card.appendChild(el(`<div class="qtext">${item.q}</div>`));
+      const row=el(`<div class="typed"><input type="text" placeholder="Escribe aquí..." autocomplete="off" autocorrect="off" spellcheck="false"><button class="btn">Revisar</button></div>`);
+      const input=row.querySelector('input');const btn=row.querySelector('button');
+      const check=()=>{
+        const ok=item.accept.map(norm).includes(norm(input.value));
+        input.classList.add(ok?'correct':'wrong');input.disabled=true;btn.disabled=true;
+        feedback(card,ok,item.fb,ok?null:('Respuesta: '+item.accept[0]));
+        addNext(card,ok);
+      };
+      btn.onclick=check;
+      input.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+      card.appendChild(row);
+      setTimeout(()=>input.focus(),50);
+    }
+    else if(item.type==='order'){
+      card.appendChild(el(`<div class="qtext">${item.q}</div>`));
+      const chosen=[];
+      const built=el('<div class="typed" style="min-height:52px;border:2px dashed var(--line);border-radius:13px;padding:10px;align-items:center"></div>');
+      const builtText=el('<div style="font-family:Baloo 2;font-weight:700;font-size:16px;color:var(--violet);flex:1">Toca las palabras en orden...</div>');
+      built.appendChild(builtText);
+      const bank=el('<div class="typed" style="margin-top:10px"></div>');
+      const tokens=shuffle(item.tokens);
+      const btns=[];
+      function refresh(){builtText.textContent=chosen.length?chosen.join(' '):'Toca las palabras en orden...';}
+      tokens.forEach((tk,ix)=>{
+        const tb=el(`<button class="pill">${tk}</button>`);
+        tb.onclick=()=>{if(tb.disabled)return;chosen.push(tk);tb.disabled=true;tb.style.opacity=.4;refresh();};
+        btns.push(tb);bank.appendChild(tb);
+      });
+      const ctrl=el('<div class="typed" style="margin-top:10px"><button class="btn">Revisar</button><button class="btn ghost small">↩︎ Borrar</button></div>');
+      ctrl.children[0].onclick=()=>{
+        const ok=norm(chosen.join(' '))===norm(item.answer);
+        built.style.borderColor=ok?'var(--green)':'var(--red)';
+        built.style.background=ok?'var(--g-soft)':'var(--co-soft)';
+        ctrl.children[0].disabled=true;ctrl.children[1].disabled=true;btns.forEach(b=>b.disabled=true);
+        feedback(card,ok,item.fb,ok?null:('Orden correcto: '+item.answer));
+        addNext(card,ok);
+      };
+      ctrl.children[1].onclick=()=>{chosen.length=0;btns.forEach(b=>{b.disabled=false;b.style.opacity=1;});refresh();};
+      card.appendChild(built);card.appendChild(bank);card.appendChild(ctrl);
+    }
+
+    box.appendChild(card);
+  }
+
+  function choose(clicked,correct,opts,item){
+    [...opts.children].forEach(o=>o.disabled=true);
+    clicked.classList.add(correct?'correct':'wrong');
+    if(!correct){
+      // reveal correct one
+      const order=item._order;
+      const pos=order.indexOf(item.a);
+      if(pos>=0)opts.children[pos].classList.add('correct');
+    }
+    feedback(box.querySelector('.q'),correct,item.fb);
+    addNext(box.querySelector('.q'),correct);
+  }
+
+  function feedback(card,ok,fb,extra){
+    const f=el(`<div class="fb ${ok?'ok':'no'} show"><span class="em">${ok?'🎉':'🤔'}</span><span>${ok?'¡Correcto!':'Casi...'} ${fb?('<small>'+fb+'</small>'):''}${extra?('<small>'+extra+'</small>'):''}</span></div>`);
+    card.appendChild(f);
+  }
+  function addNext(card,ok){
+    const last=i===questions.length-1;
+    const nb=el(`<div style="margin-top:14px;display:flex;justify-content:flex-end"><button class="btn">${last?'Ver resultado 🏁':'Siguiente →'}</button></div>`);
+    nb.querySelector('button').onclick=()=>next(ok);
+    card.appendChild(nb);
+    nb.querySelector('button').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  render();
+}
+
+/* ---------------- Vocabulary ---------------- */
+function renderVocab(){
+  app.innerHTML='';
+  app.appendChild(backBtn());
+  app.appendChild(el(`<div class="sec-title" style="margin-top:6px">💾 Vocabulary · Computers & Technology</div>`));
+  app.appendChild(el(`<div class="note" style="margin:0 4px 4px">Paso 1: Estudia las tarjetas (tócalas para girar). Paso 2: Juega el quiz.</div>`));
+
+  // Flashcards
+  let idx=0;
+  const stage=el('<div class="fc-stage"></div>');
+  const fc=el(`<div class="fc"></div>`);
+  const front=el('<div class="fc-face fc-front"></div>');
+  const back=el('<div class="fc-face fc-back"></div>');
+  fc.appendChild(front);fc.appendChild(back);stage.appendChild(fc);
+  function paint(){
+    const v=VOCAB[idx];
+    front.innerHTML=`<div class="emoji">${v.e}</div><div class="word">${v.w}</div><div class="tapnote">toca para ver 🔄</div>`;
+    back.innerHTML=`<div class="pos">${v.pos}</div><div class="es">${v.es}</div><div class="def">${v.def}</div><div class="tapnote">toca para volver</div>`;
+    fc.classList.remove('flip');
+  }
+  fc.onclick=()=>fc.classList.toggle('flip');
+  app.appendChild(stage);
+
+  const nav=el(`<div class="fc-nav">
+    <button class="btn ghost small" id="prev">← Anterior</button>
+    <span class="fc-count"><span id="cc">1</span> / ${VOCAB.length}</span>
+    <button class="btn ghost small" id="nextc">Siguiente →</button></div>`);
+  nav.querySelector('#prev').onclick=()=>{idx=(idx-1+VOCAB.length)%VOCAB.length;nav.querySelector('#cc').textContent=idx+1;paint();};
+  nav.querySelector('#nextc').onclick=()=>{idx=(idx+1)%VOCAB.length;nav.querySelector('#cc').textContent=idx+1;paint();};
+  app.appendChild(nav);
+  paint();
+
+  app.appendChild(el(`<div class="sec-title">🎮 Vocabulary Quiz</div>`));
+  const quizHolder=el('<div></div>');
+  app.appendChild(quizHolder);
+  runQuiz(quizHolder,Q_VOCAB.map(q=>Object.assign({},q)),'vocab');
+  scrollTop();
+}
+
+/* ---------------- Lessons (Zero / Passive) ---------------- */
+function renderLesson(which){
+  app.innerHTML='';
+  app.appendChild(backBtn());
+  if(which==='zero'){
+    app.appendChild(el(`
+      <div class="lesson">
+        <h2><span class="e">🔀</span> Zero Conditional</h2>
+        <div class="rule c"><b>¿Cuándo se usa?</b> Para <b>hechos, verdades generales, reglas y cosas que siempre pasan</b> (ciencia, tecnología, rutinas). Si pasa A, <u>siempre</u> pasa B.</div>
+        <div class="formula">If + <span class="hl">present simple</span> , + <span class="hl3">present simple</span></div>
+        <ul class="ex">
+          <li>If you <span class="hl">press</span> "save", the computer <span class="hl3">saves</span> your document.</li>
+          <li>If water <span class="hl">reaches</span> 0°C, it <span class="hl3">freezes</span>.</li>
+          <li>If you <span class="hl">tap</span> the icon, the fridge <span class="hl3">shows</span> a website.</li>
+        </ul>
+        <div class="rule"><b>¡Ojo con la 3ª persona!</b> Con <b>he / she / it</b> (o una cosa: <i>the laptop, the battery</i>) el verbo lleva <span class="hl">-s</span>: it save<b>s</b>, it get<b>s</b>, it shut<b>s</b> down.</div>
+        <div class="rule co"><b>Negativo:</b> usa <span class="hl2">don't / doesn't</span>. <br>If you <span class="hl2">don't</span> save your work, you lose it. · If she <span class="hl2">doesn't</span> know, she asks.</div>
+        <div class="note">💡 Puedes cambiar el orden: <i>The computer saves it <b>if</b> you press save.</i> (sin coma cuando "if" va en medio)</div>
+      </div>
+    `));
+    app.appendChild(el(`<div class="sec-title">🎮 Practice</div>`));
+    const h=el('<div></div>');app.appendChild(h);
+    runQuiz(h,Q_ZERO.map(q=>Object.assign({},q)),'zero');
+  } else {
+    app.appendChild(el(`
+      <div class="lesson">
+        <h2><span class="e">🔁</span> Past Passive Voice</h2>
+        <div class="rule co"><b>¿Qué es la voz pasiva?</b> El sujeto <b>recibe</b> la acción, no la hace. Nos importa <b>qué pasó</b>, no tanto quién lo hizo.</div>
+        <div class="formula">subject + <span class="hl2">was / were</span> + <span class="hl">past participle</span> (+ by ...)</div>
+        <ul class="ex">
+          <li><b>Singular:</b> The fridge <span class="hl2">was</span> <span class="hl">made</span> by scientists.</li>
+          <li><b>Plural:</b> The computers <span class="hl2">were</span> <span class="hl">used</span> for one hour a week.</li>
+          <li>The Internet <span class="hl2">was</span> <span class="hl">invented</span> in 1983.</li>
+        </ul>
+        <div class="rule"><b>was</b> → I / he / she / it / <i>the app</i> (singular) &nbsp;·&nbsp; <b>were</b> → you / we / they / <i>the photos</i> (plural)</div>
+        <div class="rule c"><b>Active → Passive</b><br>Active: <i>Scientists <u>made</u> the fridge.</i><br>Passive: <i>The fridge <span class="hl2">was made</span> by scientists.</i> <br>👉 El objeto pasa a ser el sujeto.</div>
+        <div class="rule co"><b>Negativo:</b> was<span class="hl2">n't</span> / were<span class="hl2">n't</span> + participio. <br>The Internet <span class="hl2">wasn't used</span> in our school until 2005.</div>
+        <div class="note">💡 Participios útiles: make→<b>made</b>, invent→<b>invented</b>, use→<b>used</b>, send→<b>sent</b>, buy→<b>bought</b>, install→<b>installed</b>, upload→<b>uploaded</b>, take→<b>taken</b>.</div>
+      </div>
+    `));
+    app.appendChild(el(`<div class="sec-title">🎮 Practice</div>`));
+    const h=el('<div></div>');app.appendChild(h);
+    runQuiz(h,Q_PASS.map(q=>Object.assign({},q)),'pass');
+  }
+  scrollTop();
+}
+
+/* ---------------- Reading ---------------- */
+function renderReadingHub(){
+  app.innerHTML='';
+  app.appendChild(backBtn());
+  app.appendChild(el(`<div class="sec-title" style="margin-top:6px">📖 Reading</div>`));
+  app.appendChild(el(`<div class="note" style="margin:0 4px 8px">Elige una historia. Lee (las palabras <mark>marcadas</mark> son gramática de la unidad) y luego responde las preguntas.</div>`));
+  const grid=el('<div class="grid"></div>');
+  const meta=[
+    {k:'fridge',ic:'🧊',cls:'t-read',t:'The Intelligent Fridge',d:'Emir & Mom · zero conditional + passive'},
+    {k:'rainforest',ic:'🌴',cls:'t-read',t:'An App Adventure',d:'Keisha in Cameroon · nature app'},
+    {k:'tech',ic:'☎️',cls:'t-read',t:'How Has Technology Changed?',d:'Mrs. Jones · past passive voice'}
+  ];
+  meta.forEach(m=>{
+    const t=el(`<button class="tile ${m.cls}"><span class="go">Leer →</span><span class="ic">${m.ic}</span><span class="tag">Story</span><h3 style="font-size:17px">${m.t}</h3><p>${m.d}</p></button>`);
+    t.onclick=()=>renderStory(m.k);
+    grid.appendChild(t);
+  });
+  app.appendChild(grid);
+  scrollTop();
+}
+
+function renderStory(key){
+  const s=STORIES[key];
+  app.innerHTML='';
+  const b=el('<button class="backbtn">← Otras historias</button>');b.onclick=renderReadingHub;app.appendChild(b);
+  app.appendChild(el(`
+    <article class="story">
+      <h2>${s.title}</h2>
+      <div class="by">${s.by}</div>
+      ${s.html}
+      <div class="glo">📚 <b>Glossary:</b> ${s.glo}</div>
+    </article>
+  `));
+  app.appendChild(el(`<div class="sec-title">📝 Comprehension</div>`));
+  const h=el('<div></div>');app.appendChild(h);
+  // reading contributes to 'read' section done-state (use per-story best by combining)
+  runQuiz(h,s.qs.map(q=>Object.assign({},q)),'read');
+  scrollTop();
+}
+
+/* ---------------- Listening ---------------- */
+function renderListening(){
+  app.innerHTML='';
+  app.appendChild(backBtn());
+  app.appendChild(el(`<div class="sec-title" style="margin-top:6px">🎧 Listening</div>`));
+  const supported = 'speechSynthesis' in window;
+  if(!supported){
+    app.appendChild(el(`<div class="warn">⚠️ Tu navegador no puede reproducir voz. Prueba en Chrome o Safari con el volumen activado. Igual puedes leer las frases y responder.</div>`));
+  }
+  app.appendChild(el(`<div class="note" style="margin:0 4px 8px">Sube el <b>volumen</b> 🔊. Toca <b>▶️ Play</b> para escuchar. Puedes repetir las veces que quieras y luego responder.</div>`));
+
+  let rate=0.9;
+  let i=0,score=0;
+  const box=el('<div></div>');app.appendChild(box);
+
+  function speak(text){
+    try{
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(text);
+      u.lang='en-US';u.rate=rate;u.pitch=1;
+      const voices=window.speechSynthesis.getVoices();
+      const en=voices.find(v=>/en[-_]/i.test(v.lang)&&/US|GB|female|Samantha|Google/i.test(v.name))||voices.find(v=>/en[-_]/i.test(v.lang));
+      if(en)u.voice=en;
+      window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
+  function result(){
+    const pct=Math.round(score/Q_LISTEN.length*100);
+    let emoji=pct===100?'🏆':pct>=80?'🌟':pct>=60?'😄':'💪';
+    let msg=pct>=80?'¡Súper oído! 👂':pct>=60?'¡Bien! Escucha de nuevo las que fallaste.':'¡Practica escuchando otra vez, tú puedes!';
+    const first=!state.done.listen || (state.best.listen||0)<score;
+    if(first){state.done.listen=true;state.best.listen=score;awardStars(pct===100?3:pct>=60?2:1);}else save();
+    if(pct>=80)confetti();
+    box.innerHTML='';
+    const r=el(`<div class="result"><div class="big">${emoji}</div><h2>${msg}</h2>
+      <div class="starburst">${'⭐'.repeat(pct===100?3:pct>=60?2:1)}</div>
+      <div class="score">Puntaje: ${score} / ${Q_LISTEN.length} (${pct}%)</div>
+      <div class="row"><button class="btn" id="rt">🔁 Reintentar</button><button class="btn ghost" id="hm">🏠 Inicio</button></div></div>`);
+    r.querySelector('#rt').onclick=()=>{i=0;score=0;render();};
+    r.querySelector('#hm').onclick=renderHome;
+    box.appendChild(r);scrollTop();
+  }
+
+  function render(){
+    if(i>=Q_LISTEN.length){result();return;}
+    const item=Q_LISTEN[i];
+    box.innerHTML='';
+    const card=el(`<div class="q"><div class="qh"><span class="qn">Audio ${i+1} de ${Q_LISTEN.length}</span><span class="qtype">⭐ ${score}</span></div></div>`);
+    const player=el(`<div class="player">
+        <button class="playbtn" title="Escuchar">▶️</button>
+        <div><div class="pt">Toca para escuchar</div><div class="ps">Puedes repetir las veces que quieras</div></div>
+      </div>`);
+    player.querySelector('.playbtn').onclick=()=>{speak(item.text);};
+    card.appendChild(player);
+    const speed=el(`<div class="speedrow">Velocidad:
+      <button class="pill" data-r="0.7">🐢 Lenta</button>
+      <button class="pill on" data-r="0.9">🚶 Normal</button>
+      <button class="pill" data-r="1">🏃 Rápida</button>
+      <button class="pill" id="repeat">🔁 Repetir</button></div>`);
+    speed.querySelectorAll('[data-r]').forEach(p=>p.onclick=()=>{rate=parseFloat(p.dataset.r);speed.querySelectorAll('[data-r]').forEach(x=>x.classList.remove('on'));p.classList.add('on');speak(item.text);});
+    speed.querySelector('#repeat').onclick=()=>speak(item.text);
+    card.appendChild(speed);
+
+    card.appendChild(el(`<div class="qtext" style="margin-top:16px">${item.q}</div>`));
+    const opts=el('<div class="opts"></div>');
+    const order=shuffle(item.opts.map((o,ix)=>ix));
+    order.forEach((realIx,pos)=>{
+      const o=el(`<button class="opt"><span class="key">${String.fromCharCode(65+pos)}</span><span>${item.opts[realIx]}</span></button>`);
+      o.onclick=()=>{
+        [...opts.children].forEach(x=>x.disabled=true);
+        const ok=realIx===item.a;
+        o.classList.add(ok?'correct':'wrong');
+        if(!ok){const p=order.indexOf(item.a);opts.children[p].classList.add('correct');}
+        const f=el(`<div class="fb ${ok?'ok':'no'} show"><span class="em">${ok?'🎉':'🤔'}</span><span>${ok?'¡Correcto!':'Casi...'} <small>${item.fb}</small><small>📝 Frase: "${item.text}"</small></span></div>`);
+        card.appendChild(f);
+        const last=i===Q_LISTEN.length-1;
+        const nb=el(`<div style="margin-top:14px;display:flex;justify-content:flex-end"><button class="btn">${last?'Ver resultado 🏁':'Siguiente →'}</button></div>`);
+        nb.querySelector('button').onclick=()=>{if(ok)score++;i++;render();};
+        card.appendChild(nb);
+      };
+      opts.appendChild(o);
+    });
+    card.appendChild(opts);
+    box.appendChild(card);
+    scrollTop();
+  }
+  if(supported && window.speechSynthesis.getVoices().length===0){window.speechSynthesis.onvoiceschanged=()=>{};}
+  render();
+}
+
+/* ---------------- Final Test ---------------- */
+function renderTest(){
+  app.innerHTML='';
+  app.appendChild(backBtn());
+  app.appendChild(el(`
+    <div class="hero" style="margin-top:6px">
+      <span class="chip">🏆 Final Challenge</span>
+      <h1 style="font-size:clamp(24px,6vw,34px)">Prueba mixta</h1>
+      <p>12 preguntas de todo: vocabulario, zero conditional, past passive y las historias. ¡Consigue tu medalla! 🥇</p>
+    </div>
+  `));
+  const pool=[
+    ...Q_VOCAB, ...Q_ZERO, ...Q_PASS,
+    STORIES.fridge.qs[1],STORIES.tech.qs[1],STORIES.rainforest.qs[2],
+    {type:'mc',q:'"The photos were uploaded yesterday" is:',opts:['Past passive','Zero conditional','Present'],a:0,fb:'were + uploaded = past passive.'}
+  ];
+  const questions=shuffle(pool).slice(0,12).map(q=>Object.assign({},q,{_order:null}));
+  const h=el('<div style="margin-top:14px"></div>');app.appendChild(h);
+  runQuiz(h,questions,'test');
+  scrollTop();
+}
+
+/* ---------------- Boot ---------------- */
+setStars();
+renderHome();
+</script>
