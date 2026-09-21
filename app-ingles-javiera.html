@@ -213,6 +213,29 @@
   .result .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
   .starburst{display:inline-flex;gap:5px;font-size:30px;margin:6px 0}
 
+  /* Banners (review / exam) */
+  .banner{width:100%;text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:20px;padding:15px 17px;
+    display:flex;align-items:center;gap:13px;margin-top:14px;color:var(--ink);box-shadow:0 6px 18px var(--shadow);
+    transition:transform .15s,box-shadow .15s}
+  .banner:hover{transform:translateY(-2px);box-shadow:0 12px 26px var(--shadow)}
+  .banner:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
+  .banner .bic{width:48px;height:48px;flex:none;border-radius:14px;display:grid;place-items:center;font-size:26px;background:var(--card)}
+  .banner .btxt{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}
+  .banner .btxt b{font-family:'Baloo 2';font-size:17px}
+  .banner .btxt small{color:var(--ink-soft);font-weight:700;font-size:12.5px}
+  .banner .bgo{font-family:'Baloo 2';font-weight:800;color:var(--violet);font-size:14px;flex:none}
+  .banner-rev{background:linear-gradient(120deg,var(--y-soft),var(--co-soft))}
+  .banner-exam{background:linear-gradient(120deg,var(--v-soft),var(--c-soft))}
+
+  /* Exam mode */
+  .opt.sel{border-color:var(--violet);background:var(--v-soft)}
+  .opt.sel .key{background:var(--violet);color:#fff}
+  .exambar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:10;display:flex;justify-content:space-between;
+    align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 16px;margin-bottom:12px;
+    font-family:'Baloo 2';font-weight:800;box-shadow:0 4px 12px var(--shadow)}
+  .exambar span:first-child{font-size:18px;color:var(--violet)}
+  .grade{font-family:'Baloo 2';font-weight:800;font-size:64px;line-height:1;margin:2px 0}
+
   .foot{text-align:center;color:var(--ink-soft);font-weight:700;font-size:12.5px;padding:24px 0 8px}
   .confetti{position:fixed;top:-10px;width:11px;height:16px;z-index:60;pointer-events:none;border-radius:2px}
 
@@ -234,7 +257,7 @@
 <script>
 /* ---------------- Persistence ---------------- */
 const STORE='javi_english_v1';
-let state={stars:0,done:{},best:{}};
+let state={stars:0,done:{},best:{},mistakes:[]};
 try{const s=localStorage.getItem(STORE);if(s)state=Object.assign(state,JSON.parse(s));}catch(e){}
 function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
 function setStars(){document.getElementById('starCount').textContent=state.stars;}
@@ -288,7 +311,14 @@ const Q_VOCAB=[
   {type:'fill',q:'Complete: A secret code to log in to an account is a ____.',accept:['password'],fb:'password = contraseña.'},
   {type:'mc',q:'Instagram and TikTok are examples of ____.',opts:['social media','a battery','a virus','a password'],a:0,fb:'They are social media apps.'},
   {type:'fill',q:'Opposite of "download": to ____ a photo to the internet.',accept:['upload'],fb:'upload ⬆️ vs download ⬇️.'},
-  {type:'mc',q:'Your phone is dying. You need to charge the ____.',opts:['screen','emoji','battery','website'],a:2,fb:'battery = batería. 🔋'}
+  {type:'mc',q:'Your phone is dying. You need to charge the ____.',opts:['screen','emoji','battery','website'],a:2,fb:'battery = batería. 🔋'},
+  {type:'mc',q:'A watch that connects to apps and the internet is a ____.',opts:['smartwatch','laptop','password','emoji'],a:0,fb:'smartwatch = reloj inteligente. ⌚'},
+  {type:'fill',q:'Complete: The flat glass part of a phone that shows images is the ____.',accept:['screen'],fb:'screen = pantalla. 🖥️'},
+  {type:'mc',q:'This map app can ____ where you are.',opts:['delete','track','install','save'],a:1,fb:'track = rastrear / seguir. 📍'},
+  {type:'mc',q:'You turn your device off and then on again. You ____ it.',opts:['restart','upload','swipe','delete'],a:0,fb:'restart = reiniciar. 🔄'},
+  {type:'fill',q:'Complete: A small picture in a chat that shows a feeling is an ____.',accept:['emoji'],fb:'emoji 😄'},
+  {type:'mc',q:'You use these to listen to music without disturbing others.',opts:['a virus','headphones','a battery','a website'],a:1,fb:'headphones = audífonos. 🎧'},
+  {type:'fill',q:'Complete: To move your finger across a touch screen is to ____.',accept:['swipe'],fb:'swipe = deslizar. 👉'}
 ];
 
 const Q_ZERO=[
@@ -301,7 +331,13 @@ const Q_ZERO=[
   {type:'fill',q:'Fix the mistake: "If you deletes a file, it disappears."  → If you ____ a file, it disappears.',accept:['delete'],fb:'"You" never takes -s → delete.'},
   {type:'fill',q:'Fill in (negative): If she ____ (not know) the answer, she asks the teacher.',accept:["doesn't know","does not know","doesnt know"],fb:'Negative in zero conditional: doesn\'t + verb.'},
   {type:'order',q:'Order the words into a zero conditional sentence:',tokens:['if','the','battery','is','low','the','phone','dies'],answer:'if the battery is low the phone dies',fb:'If + condition, + result. ✔'},
-  {type:'gap',q:'If a green light ____, cars ____.',opts:[['turns','go'],['turn','goes'],['turns','goes']],a:0,fb:'"a green light" → turns (it). "cars" → go (they).'}
+  {type:'gap',q:'If a green light ____, cars ____.',opts:[['turns','go'],['turn','goes'],['turns','goes']],a:0,fb:'"a green light" → turns (it). "cars" → go (they).'},
+  {type:'gap',q:'If you don\'t ____ the app after the update, it doesn\'t ____ properly.',opts:[['install','work'],['installs','works'],['install','works']],a:0,fb:'"you" → install / work (sin -s, y con don\'t/doesn\'t).'},
+  {type:'gap',q:'If a file ____ from the internet, it sometimes ____ your computer with a virus.',opts:[['download','infect'],['downloads','infects'],['downloads','infect']],a:1,fb:'"a file" es IT → downloads / infects.'},
+  {type:'mc',q:'Which sentence is CORRECT?',opts:['If you heats ice, it melts.','If you heat ice, it melts.','If you heat ice, it melt.'],a:1,fb:'"you" → heat (no -s). "it" → melts (con -s).'},
+  {type:'fill',q:'Complete this true fact: If water reaches 100°C, it ____.',accept:['boils'],fb:'it boils = hierve. 💧'},
+  {type:'mc',q:'In the zero conditional, BOTH verbs are in the ____.',opts:['present simple','past simple','future with will'],a:0,fb:'If + present simple, + present simple.'},
+  {type:'order',q:'Ordena las palabras (zero conditional):',tokens:['if','you','heat','ice','it','melts'],answer:'if you heat ice it melts',fb:'If you heat ice, it melts. ✔'}
 ];
 
 const Q_PASS=[
@@ -314,7 +350,14 @@ const Q_PASS=[
   {type:'fill',q:'Complete with the verb "send": The photos ____ ____ yesterday. (past passive, plural)',accept:['were sent'],fb:'Plural → were + sent (past participle).'},
   {type:'mc',q:'Choose the passive sentence:',opts:['My mom bought a tablet.','A tablet was bought by my mom.','My mom is buying a tablet.'],a:1,fb:'Passive: the object (a tablet) is the subject + was bought.'},
   {type:'gap',q:'The Internet ____ ____ in our school until 2005.',opts:[["wasn't",'used'],["weren't",'used'],['isn\'t','used']],a:0,fb:'Negative past passive singular → wasn\'t used.'},
-  {type:'fill',q:'Active → Passive. "They installed the app." → The app ____ ____.',accept:['was installed'],fb:'The app (singular) + was installed.'}
+  {type:'fill',q:'Active → Passive. "They installed the app." → The app ____ ____.',accept:['was installed'],fb:'The app (singular) + was installed.'},
+  {type:'gap',q:'The homework ____ ____ by the teacher yesterday.',opts:[['was','checked'],['were','checked'],['is','checked']],a:0,fb:'Singular + pasado → was checked.'},
+  {type:'fill',q:'Active → Passive. "They sent the emails." → The emails ____ ____.',accept:['were sent'],fb:'Plural → were sent (send→sent).'},
+  {type:'mc',q:'Which sentence is PAST PASSIVE?',opts:['The app is downloaded.','The app was downloaded.','The app downloads.'],a:1,fb:'was + downloaded = past passive.'},
+  {type:'gap',q:'The photos ____ ____ to social media last night.',opts:[['was','uploaded'],['were','uploaded'],['were','upload']],a:1,fb:'"photos" es plural → were uploaded.'},
+  {type:'fill',q:'Complete with "take": The selfie ____ ____ at the party. (singular)',accept:['was taken'],fb:'take→taken → was taken.'},
+  {type:'fill',q:'Active → Passive. "My dad bought the tablet." → The tablet ____ ____ by my dad.',accept:['was bought'],fb:'buy→bought → was bought.'},
+  {type:'mc',q:'Choose the correct NEGATIVE past passive:',opts:["The Internet wasn't invented in 1990.","The Internet weren't invented in 1990.","The Internet not invented in 1990."],a:0,fb:'Singular → wasn\'t invented.'}
 ];
 
 const STORIES={
@@ -402,6 +445,7 @@ const SECTIONS=[
 
 /* ---------------- Helpers ---------------- */
 const app=document.getElementById('app');
+let examTimer=null;
 function el(h){const d=document.createElement('div');d.innerHTML=h.trim();return d.firstElementChild;}
 function norm(s){return (s||'').toLowerCase().replace(/[.,;!?"']/g,'').replace(/\s+/g,' ').trim();}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -420,9 +464,14 @@ function confetti(){
   }
 }
 function awardStars(n){state.stars+=n;save();setStars();}
+function qKey(it){return (it.q||it.text||'').slice(0,140);}
+function cleanQ(it){const c=Object.assign({},it);delete c._order;return c;}
+function addMistake(it,sec){const k=qKey(it);if(!state.mistakes.some(m=>qKey(m)===k)){const c=cleanQ(it);c._sec=sec;state.mistakes.push(c);}save();}
+function removeMistake(it){const k=qKey(it);const n=state.mistakes.length;state.mistakes=state.mistakes.filter(m=>qKey(m)!==k);if(state.mistakes.length!==n)save();}
 
 /* ---------------- Home ---------------- */
 function renderHome(){
+  clearInterval(examTimer);
   const total=SECTIONS.length;
   const doneCount=SECTIONS.filter(s=>state.done[s.id]).length;
   const pct=Math.round(doneCount/total*100);
@@ -441,6 +490,10 @@ function renderHome(){
       <div class="bar"><i style="width:${pct}%"></i></div>
     </div>
   `));
+  if(state.mistakes.length){
+    const rb=el(`<button class="banner banner-rev"><span class="bic">🔁</span><span class="btxt"><b>Repasar mis errores</b><small>Tienes ${state.mistakes.length} pregunta(s) para reforzar</small></span><span class="bgo">Repasar →</span></button>`);
+    rb.onclick=renderReview; app.appendChild(rb);
+  }
   app.appendChild(el(`<div class="sec-title">Elige un tema 👇</div>`));
   const grid=el('<div class="grid"></div>');
   SECTIONS.forEach((s,i)=>{
@@ -462,6 +515,8 @@ function renderHome(){
     grid.appendChild(t);
   });
   app.appendChild(grid);
+  const eb=el(`<button class="banner banner-exam"><span class="bic">🎯</span><span class="btxt"><b>Simulacro de prueba</b><small>Examen cronometrado ⏱️ · con nota (1,0–7,0)</small></span><span class="bgo">Empezar →</span></button>`);
+  eb.onclick=renderExam; app.appendChild(eb);
   if(doneCount===total){
     app.appendChild(el(`<div class="result" style="margin-top:22px"><div class="big">🌟</div><h2>¡Completaste todo!</h2><p>Estás lista para la prueba. Repasa lo que quieras cuando quieras.</p></div>`));
   }
@@ -474,6 +529,7 @@ function backBtn(){
 }
 
 function open(id){
+  clearInterval(examTimer);
   if(id==='vocab')renderVocab();
   else if(id==='zero')renderLesson('zero');
   else if(id==='pass')renderLesson('pass');
@@ -485,7 +541,7 @@ function open(id){
 /* ---------------- Generic quiz engine ---------------- */
 /* questions: array of {type, ...}. onDone(score,total,secId) */
 function runQuiz(container,questions,secId,titleHtml){
-  let i=0,score=0;
+  let i=0,score=0;const missed=[];
   const box=el('<div></div>');
   container.appendChild(box);
   function progress(){return `<div class="qh"><span class="qn">Pregunta ${i+1} de ${questions.length}</span><span class="qtype">⭐ ${score}</span></div>`;}
@@ -497,7 +553,8 @@ function runQuiz(container,questions,secId,titleHtml){
     else if(pct>=80){emoji='🌟';msg='¡Excelente! Casi perfecto.';}
     else if(pct>=60){emoji='😄';msg='¡Bien! Repasa lo que fallaste y vuelve a intentar.';}
     else {emoji='💪';msg='¡Sigue practicando! Inténtalo de nuevo, tú puedes.';}
-    const first=!state.done[secId] || (state.best[secId]||0)<score;
+    const trackable=SECTIONS.some(s=>s.id===secId);
+    const first=trackable && (!state.done[secId] || (state.best[secId]||0)<score);
     if(first){state.done[secId]=true;state.best[secId]=score;
       const gained = pct===100?3:pct>=60?2:1; awardStars(gained);}
     else {save();}
@@ -509,20 +566,25 @@ function runQuiz(container,questions,secId,titleHtml){
         <h2>${msg}</h2>
         <div class="starburst">${'⭐'.repeat(pct===100?3:pct>=60?2:1)}</div>
         <div class="score">Puntaje: ${score} / ${questions.length} (${pct}%)</div>
-        <p>${first?'¡Ganaste estrellas nuevas! ⭐':'Ya lo habías hecho — igual buen repaso.'}</p>
+        <p>${first?'¡Ganaste estrellas nuevas! ⭐':'¡Buen repaso! 💪'}</p>
         <div class="row">
-          <button class="btn" id="retry">🔁 Reintentar</button>
+          ${missed.length?`<button class="btn" id="rev">🔁 Repasar los que fallé (${missed.length})</button>`:''}
+          <button class="btn ${missed.length?'ghost':''}" id="retry">↩︎ Reintentar todo</button>
           <button class="btn ghost" id="home">🏠 Inicio</button>
         </div>
       </div>`);
-    r.querySelector('#retry').onclick=()=>{i=0;score=0;render();scrollTop();};
+    r.querySelector('#retry').onclick=()=>{i=0;score=0;missed.length=0;render();scrollTop();};
     r.querySelector('#home').onclick=renderHome;
+    const revBtn=r.querySelector('#rev');
+    if(revBtn)revBtn.onclick=()=>{box.innerHTML='';runQuiz(box,missed.map(x=>Object.assign({},x)),secId+'_rev');};
     box.appendChild(r);
     scrollTop();
   }
 
   function next(correct){
-    if(correct)score++;
+    const item=questions[i];
+    if(correct){score++;removeMistake(item);}
+    else{missed.push(cleanQ(item));addMistake(item,secId);}
     i++;
     if(i>=questions.length)showResult(); else render();
   }
@@ -866,6 +928,133 @@ function renderTest(){
   const h=el('<div style="margin-top:14px"></div>');app.appendChild(h);
   runQuiz(h,questions,'test');
   scrollTop();
+}
+
+/* ---------------- Review mistakes ---------------- */
+function renderReview(){
+  clearInterval(examTimer);
+  app.innerHTML='';
+  app.appendChild(backBtn());
+  app.appendChild(el(`<div class="sec-title" style="margin-top:6px">🔁 Repasar mis errores</div>`));
+  if(!state.mistakes.length){
+    const r=el(`<div class="result"><div class="big">🎉</div><h2>¡No tienes errores pendientes!</h2><p>Cuando falles una pregunta en cualquier sección, aparecerá aquí para repasarla.</p><div class="row"><button class="btn" id="hm">🏠 Inicio</button></div></div>`);
+    r.querySelector('#hm').onclick=renderHome; app.appendChild(r); scrollTop(); return;
+  }
+  app.appendChild(el(`<div class="note" style="margin:0 4px 8px">Estas son las preguntas que fallaste. Si las respondes bien, salen de la lista. 💪</div>`));
+  const h=el('<div></div>');app.appendChild(h);
+  runQuiz(h, shuffle(state.mistakes).slice(0,20).map(x=>Object.assign({},x)), 'review');
+  scrollTop();
+}
+
+/* ---------------- Simulacro (timed exam) ---------------- */
+function renderExam(){
+  clearInterval(examTimer);
+  app.innerHTML='';
+  app.appendChild(backBtn());
+  const rpool=[...Q_VOCAB,...Q_ZERO,...Q_PASS,
+    STORIES.fridge.qs[1],STORIES.tech.qs[0],STORIES.tech.qs[2],STORIES.rainforest.qs[1]]
+    .filter(q=>q.type==='mc'||q.type==='gap'||q.type==='fill');
+  const questions=shuffle(rpool).slice(0,15).map(q=>Object.assign({},q,{_order:null}));
+  const given=new Array(questions.length).fill(null);
+  let idx=0, left=15*60;
+  const wrap=el('<div></div>');app.appendChild(wrap);
+
+  function fmt(s){const m=Math.floor(s/60),ss=s%60;return m+':'+(ss<10?'0':'')+ss;}
+  function startTimer(){
+    clearInterval(examTimer);
+    examTimer=setInterval(()=>{
+      left--;
+      const t=document.getElementById('examClock');
+      if(t){t.textContent='⏱️ '+fmt(left);if(left<=60)t.style.color='var(--red)';}
+      if(left<=0){clearInterval(examTimer);finish();}
+    },1000);
+  }
+
+  function intro(){
+    clearInterval(examTimer);
+    wrap.innerHTML='';
+    wrap.appendChild(el(`
+      <div class="hero" style="margin-top:6px">
+        <span class="chip">🎯 Simulacro de prueba</span>
+        <h1 style="font-size:clamp(24px,6vw,34px)">¿Lista, Javiera?</h1>
+        <p>Son <b>${questions.length} preguntas</b> mezcladas de toda la Unit 6. Tienes <b>15 minutos</b> ⏱️. Aquí <b>no</b> te digo si están bien hasta el final, como en la prueba de verdad. Al terminar recibes tu <b>nota (1,0–7,0)</b>.</p>
+      </div>`));
+    const go=el(`<div style="margin-top:16px;display:flex;justify-content:center"><button class="btn" style="font-size:17px;padding:14px 28px">▶️ Empezar simulacro</button></div>`);
+    go.querySelector('button').onclick=()=>{startTimer();render();};
+    wrap.appendChild(go);
+    scrollTop();
+  }
+
+  function render(){
+    const item=questions[idx];
+    wrap.innerHTML='';
+    wrap.appendChild(el(`<div class="exambar"><span id="examClock">⏱️ ${fmt(left)}</span><span>Pregunta ${idx+1}/${questions.length}</span></div>`));
+    const card=el(`<div class="q"></div>`);
+    const qtext=(item.type==='gap')?item.q.replace(/____/g,'<span class="blank">?</span>'):item.q;
+    card.appendChild(el(`<div class="qtext">${qtext}</div>`));
+    if(item.type==='fill'){
+      const row=el(`<div class="typed"><input type="text" placeholder="Escribe tu respuesta..." autocomplete="off" autocorrect="off" spellcheck="false"></div>`);
+      const inp=row.querySelector('input');if(given[idx]!=null)inp.value=given[idx];
+      inp.oninput=()=>given[idx]=inp.value;
+      card.appendChild(row);
+    } else {
+      const opts=el('<div class="opts"></div>');
+      const order=item._order||(item._order=shuffle(item.opts.map((o,ix)=>ix)));
+      order.forEach((realIx,pos)=>{
+        const label=(item.type==='gap')?item.opts[realIx].join('  /  '):item.opts[realIx];
+        const o=el(`<button class="opt${given[idx]===realIx?' sel':''}"><span class="key">${String.fromCharCode(65+pos)}</span><span>${label}</span></button>`);
+        o.onclick=()=>{given[idx]=realIx;[...opts.children].forEach(x=>x.classList.remove('sel'));o.classList.add('sel');};
+        opts.appendChild(o);
+      });
+      card.appendChild(opts);
+    }
+    const nav=el(`<div style="margin-top:16px;display:flex;justify-content:space-between;gap:10px">
+      <button class="btn ghost small" ${idx===0?'disabled':''} id="prev">← Anterior</button>
+      <button class="btn" id="nx">${idx===questions.length-1?'Terminar 🏁':'Siguiente →'}</button></div>`);
+    nav.querySelector('#prev').onclick=()=>{if(idx>0){idx--;render();}};
+    nav.querySelector('#nx').onclick=()=>{if(idx===questions.length-1)finish();else{idx++;render();}};
+    card.appendChild(nav);
+    wrap.appendChild(card);
+    scrollTop();
+  }
+
+  function isCorrect(item,g){
+    if(g==null||g==='')return false;
+    if(item.type==='fill')return item.accept.map(norm).includes(norm(g));
+    return g===item.a;
+  }
+
+  function finish(){
+    clearInterval(examTimer);
+    let score=0;const wrong=[];
+    questions.forEach((item,ix)=>{const ok=isCorrect(item,given[ix]);if(ok)score++;else{wrong.push(cleanQ(item));addMistake(item,'exam');}});
+    const total=questions.length,pct=score/total;
+    let nota = pct>=0.6 ? 4.0+(pct-0.6)/0.4*3.0 : 1.0+pct/0.6*3.0;
+    nota=Math.round(nota*10)/10;
+    const timeUsed=15*60-left, pass=nota>=4.0;
+    if(pass)confetti();
+    wrap.innerHTML='';
+    const notaStr=nota.toFixed(1).replace('.',',');
+    wrap.appendChild(el(`
+      <div class="result">
+        <div class="big">${pass?'🎉':'📚'}</div>
+        <h2>${pass?'¡Aprobaste el simulacro!':'¡A repasar un poco más!'}</h2>
+        <div class="grade" style="color:${pass?'var(--green)':'var(--red)'}">${notaStr}</div>
+        <div class="score">${score} / ${total} correctas (${Math.round(pct*100)}%) · ⏱️ ${fmt(timeUsed)}</div>
+        <p>${pass?'¡Vas muy bien para la prueba! 💪':'Tranquila, esto es práctica. Repasa y vuelve a intentar. 💜'}</p>
+        <div class="row">
+          ${wrong.length?`<button class="btn" id="rev">🔁 Repasar los que fallé (${wrong.length})</button>`:''}
+          <button class="btn ${wrong.length?'ghost':''}" id="again">↩︎ Otro simulacro</button>
+          <button class="btn ghost" id="hm">🏠 Inicio</button>
+        </div>
+      </div>`));
+    const rb=wrap.querySelector('#rev');if(rb)rb.onclick=()=>{wrap.innerHTML='';runQuiz(wrap,wrong.map(x=>Object.assign({},x)),'exam_rev');};
+    wrap.querySelector('#again').onclick=renderExam;
+    wrap.querySelector('#hm').onclick=renderHome;
+    scrollTop();
+  }
+
+  intro();
 }
 
 /* ---------------- Boot ---------------- */
